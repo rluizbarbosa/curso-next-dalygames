@@ -8,14 +8,11 @@ import Label from "./components/label";
 import GameCard from "@/components/gameCard";
 import { Metadata } from "next";
 
-interface ParamsProps{
-    params: {
-        id: string
-    }
-}
-export async function generateMetadata({ params } : ParamsProps) : Promise<Metadata>{
+type Params = Promise<{ id: string }>
 
-    const { id } = await params;
+export async function generateMetadata( props: { params: Params }) : Promise<Metadata>{
+
+    const { id } = await props.params;
 
     const game: GameProps = await getData(id)
 
@@ -63,9 +60,9 @@ async function getDalyGame(){
   }
 }
 
-export default async function Game ({ params} : {params: Promise<{ id: string }>}){
+export default async function Game (props: { params: Params }){
 
-    const { id } = await params;
+    const { id } = await props.params;
 
     const dataGame : GameProps = await getData(id)
     const dalyGame : GameProps = await getDalyGame()
